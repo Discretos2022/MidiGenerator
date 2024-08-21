@@ -101,7 +101,7 @@ for onset in onset_frames:
 for entry in notes:
 
     # Retrieve the MIDI note number for this note name
-    note_number = #pretty_midi.note_name_to_number(pretty_midi.key_number_to_key_name(int(entry[0])))
+    #note_number = pretty_midi.note_name_to_number(pretty_midi.key_number_to_key_name(int(entry[0])))
     #print(note_number)
     #note_number1 = getMidi((getNoteFromNumber(note_number).strip() + '2').__str__())
 
