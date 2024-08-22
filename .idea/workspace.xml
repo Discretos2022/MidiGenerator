@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7237cedd-e035-4144-a178-2ba888af515a" name="Changes" comment="Test 2">
+    <list default="true" id="7237cedd-e035-4144-a178-2ba888af515a" name="Changes" comment="Test 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Frequency_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/Frequency_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/Generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/SearchNote.py" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/SearchNote.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/cello-C-chord.mid" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/cello-C-chord.mid" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,18 +43,28 @@
     "Python.Frequency.executor": "Run",
     "Python.Frequency_2.executor": "Run",
     "Python.Generator.executor": "Run",
+    "Python.PlotGraph.executor": "Run",
+    "Python.Prototype_1.executor": "Run",
+    "Python.Prototype_2.executor": "Run",
     "Python.SearchNote.executor": "Run",
+    "Python.Test.executor": "Run",
+    "Python.cli.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.plot_dynamic_beat.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Joshua/Documents/Joshua Siedel/Programmation Python/MidiGenerator/.venv/res",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable"
+    "last_opened_file_path": "C:/Users/Joshua/Documents/Joshua Siedel/Programmation Python/MidiGenerator/.venv/TestSIEDEL",
+    "settings.editor.selected.configurable": "configurable.group.editor"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Joshua\Documents\Joshua Siedel\Programmation Python\MidiGenerator\.venv\TestSIEDEL" />
       <recent name="C:\Users\Joshua\Documents\Joshua Siedel\Programmation Python\MidiGenerator\.venv\res" />
+      <recent name="C:\Users\Joshua\Documents\Joshua Siedel\Programmation Python\MidiGenerator\.venv\TestSIEDEL\res" />
+      <recent name="C:\Users\Joshua\Documents\Joshua Siedel\Programmation Python\MidiGenerator\.venv\Base" />
+      <recent name="C:\Users\Joshua\Documents\Joshua Siedel\Programmation Python\MidiGenerator\.venv" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -85,7 +99,23 @@
       <option name="project" value="LOCAL" />
       <updated>1724069789380</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Test 2">
+      <option name="closed" value="true" />
+      <created>1724146915786</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724146915786</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Test 3">
+      <option name="closed" value="true" />
+      <created>1724147193600</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724147193600</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -102,6 +132,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Test" />
     <MESSAGE value="Test 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test 2" />
+    <MESSAGE value="Test 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test 3" />
   </component>
 </project>

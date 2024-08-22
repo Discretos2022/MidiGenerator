@@ -23,4 +23,4 @@ for onset in onset_frames:
       first = False
 print("Note pitch \t Onset frame \t Note duration")
 for entry in notes:
-  print(entry[0],'\t\t\t',entry[1],'\t\t\t',entry[2])
+  print(entry[0],'\t\t\t',librosa.frames_to_time(entry[1]),'\t\t\t',entry[2])
