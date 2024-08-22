@@ -46,13 +46,13 @@ notes_data = []
 #Each row contains all the Db for one frequency
 #Peaks contains the time frame and properties (heights,...)
 for i, row in enumerate(spectrogram):
-    peaks = sp.signal.find_peaks(row, height=20, threshold=0, distance=1)
+    peaks = sp.signal.find_peaks(row, height=25, threshold=0.2, distance=1, prominence=10)
     peak_times = librosa.frames_to_time(peaks[0]) #All the frames containing a peak
     if peaks[0].size != 0:
         notes_data.append([peak_times, [frequencies[i]] * len(peaks), peaks[1]])
 
 
-#Array of Tuple(Frequency, Time, PeakHeights)
+#Array of Tuple(Frequency, Time, PeakHeights) Sorted by frequency
 dataSets = []
 for row in range(len(notes_data)):
     frequency =  notes_data[row][1][0]
@@ -60,16 +60,19 @@ for row in range(len(notes_data)):
         timeArray =  notes_data[row][0][freq]
         peaksProperties = notes_data[row][2]['peak_heights'][freq]
         dataSets.append((float(frequency),float(timeArray), float(peaksProperties)))
-def displayDataSet():
+
+
+def displayDataSet(dataSets):
     for row in range(len(dataSets)):
         print(f"Row : {row}")
         print(f"Frequency : {dataSets[row][0]}, Time : {dataSets[row][1]}, PeakHeight : {dataSets[row][2]}")
         print("--------")
 
-displayDataSet()
+
 
 #5. Display peaks on spectrogram
 def displaySpectogPeaks(musicSpectrogram, sr, hop_length, dataSets, y_axis="log"):
+    displayDataSet(dataSets)
     plt.figure(figsize=(10, 5))
     librosa.display.specshow(musicSpectrogram,
                              sr=sr,
@@ -83,8 +86,16 @@ def displaySpectogPeaks(musicSpectrogram, sr, hop_length, dataSets, y_axis="log"
     plt.show()
 
 #Filtering
+#Remove all the peaks which are at aproximately the same frequencies
+filteringOne = []
+prevRow = dataSets[0]
+for row in range(len(dataSets)-1):
+    nextRow = dataSets[row + 1]
+    #Check difference of time (must be greater than 0.25)
+    if np.abs(prevRow[1] - nextRow[1]) >= 4:
+        filteringOne.append(prevRow)
+    prevRow = nextRow
 
-#Goal 0 : Create an array of Tuple (with freq and time)
 
 #Goal 1 remove all the closest cross which are at the same frequency (or close)
  #Group all the peaks by time
@@ -128,4 +139,5 @@ for row in range(len(dataSets)):
 piano_Instrument.instruments.append(piano)
 piano_Instrument.write('pianoTEST.mid')
 
+displaySpectogPeaks(spectrogram,sr, HOP_LENGTH, filteringOne)
 displaySpectogPeaks(spectrogram,sr, HOP_LENGTH, dataSets)
