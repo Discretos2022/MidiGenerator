@@ -86,7 +86,8 @@ def displayDataSet(dataSets):
         print(f"Frequency : {dataSets[row][0]}, Time : {dataSets[row][1]}, PeakHeight : {dataSets[row][2]}")
         print("--------")
 
-
+def hz_to_fft(hz):
+    return round((hz*2048)/sr)
 
 #4. DETECTION OF THE PEAKS
 def detectionOfPeaks(spectrogram):
@@ -107,6 +108,37 @@ def creationOfPeaksDataSet(notes_data):
             peaksProperties = notes_data[row][2]['peak_heights'][freq]
             dataSets.append((float(frequency),float(timeArray),float(peaksProperties)))
     return(dataSets)
+
+def displaySpectogInTimeT(musicSpectrogram, framePeaks, num = -1):
+    #All important peaks
+    onset_frames = librosa.onset.onset_detect(y=music, sr=sr)
+    SpectTransposed = np.transpose(musicSpectrogram)
+    plt.plot(SpectTransposed[onset_frames[framePeaks]])
+    if num != -1:
+        plt.vlines(num, -50, 50, color="r")
+
+def displaySpectogInTimeTWithFreq(musicSpectrogram,framePeaks, nums):
+    onset_frames = librosa.onset.onset_detect(y=music, sr=sr)
+    fig, ax = plt.subplots()
+    T = np.transpose(musicSpectrogram)
+    for n in nums:
+        if n[0] != 0:
+            plt.vlines(hz_to_fft(n[0]), -50, 60, color="r") # 41
+    plt.plot(T[onset_frames[framePeaks]])
+
+def searchMaxValues(graph):
+    threshold = 0
+    frequencies = librosa.fft_frequencies()
+    #going through all the value in one frame
+    values = []
+    for value in range(len(graph)):
+        if value != 0 or value != len(graph)-2:
+            #Check the maximum (between two lower values)
+            if graph[value-1] < graph[value] and graph[value+1] < graph[value]:
+                #decibels threshold
+                if graph[value] > threshold:
+                    values.append([frequencies[value],graph[value]])
+    return values
 
 #DETECTING LINES ON THE SPECTROGRAM
 def detectionOfLines(dataSets):
@@ -143,9 +175,6 @@ def detectionOfLines(dataSets):
 #    if np.abs(prevFreq - nextFreq) >= threshold:
 #        filtered_data.append(notes_data[row])
 
-tableOfNotes = [[0,261],[22,293],[44,329],[66,349],[88,392],[110,440],[132,493],[154,523]]
-#tablesOfNotes = [frames,frequency]
-
 def dataToDisplayNotes(tablesOfNotes):
     displayable = []
     for note in range(len(tableOfNotes)):
@@ -153,6 +182,73 @@ def dataToDisplayNotes(tablesOfNotes):
         frequency = tableOfNotes[note][1]
         displayable.append([time,frequency])
     return(displayable)
+
+def SplitFondamentaleAndHarmonique(values):
+    final_value = [[]]
+    final = []
+    if len(values) == 0:
+        return final_value
+    final_value.append(np.array(values).argmax())
+    final_value[0].append(np.array(values).argmax())
+    for v in values:
+        for fv in range(0, len(final_value) - 1):
+            #print(str("{0:.1f}".format(final_value[fv][0] / v)) + " = " + str(float(int(final_value[fv][0] / v))))
+            if ("{0:.1f}".format(final_value[fv][0] / v)) == (float(int(final_value[fv][0] / v))):
+                #print("Add !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                if not final_value[fv].__contains__(v):
+                    final_value[fv].append(v)
+                    final.append(v)
+
+    return final_value
+
+def SplitFondamentaleAndHarmoniqueWithoutOrdre(values):
+    final = []
+    if len(values) == 0:
+        return final
+    final.append(float(np.array(values).argmax()))
+    for v in range(0, len(values) - 2):
+        #if math.fabs(values[v] - values[v - 1]) > 50:
+        if values[v] > 0:
+            if values[v] > 12:
+                #if isFondamentale(values, values[v]):
+                    final.append(values[v])
+    return final
+
+
+def isFondamentale(value, hz):
+    for v in value:
+        print((v / hz), " / ", round(v / hz))
+
+        if (v / hz) == round(v / hz):
+            return False
+    return True
+
+
+#Find notes
+def searchNote():
+    notes = []
+    #go through all the frames
+    onset_frames = librosa.onset.onset_detect(y=music, sr=sr)
+    for i,frame in enumerate(onset_frames):
+        #change the orientation of the table
+        tableTransposed = np.transpose(musicSpectrogram)
+        frameTransposed = tableTransposed[frame]
+        #look for all the maximal value of each frames
+        pic = searchMaxValues(frameTransposed)
+        displaySpectogInTimeTWithFreq(musicSpectrogram,i,pic)
+        plt.show()
+        #fondarmonique = SplitFondamentaleAndHarmonique(pic)
+        #finalList = SplitFondamentaleAndHarmoniqueWithoutOrdre(pic)
+        #print(len(testFreq))
+        #if len(testFreq) != 0:
+
+        #Adding all the found values and convert it into the right format (for duration)
+        for note in range(len(pic)):
+            notes.append([frame, pic[note]])
+        pic = []
+
+    return(notes)
+
 
 def getDuration(notes, spectrogram):
     finalnotes = []
@@ -189,6 +285,9 @@ def midiConversion(notes):
     piano_Instrument.instruments.append(piano)
     piano_Instrument.write('pianoTEST.mid')
 
+
+#MAIN
+tableOfNotes = searchNote()
 displayLinesNotes(musicSpectrogram,sr,HOP_LENGTH, dataToDisplayNotes(tableOfNotes))
 music = getDuration(tableOfNotes,musicSpectrogram)
 midiConversion(music)
