@@ -10,10 +10,10 @@ HOP_LENGTH = 512
 #sr = 22050
 music, sr = librosa.load(audioSample)
 #APPLYING FOURIER AND CREATE SPECTROGRAM
-FMIN = librosa.note_to_hz("C2")
+FMIN = float(librosa.note_to_hz("C2"))
 shortFourier = librosa.cqt(music, fmin=FMIN)
 musicSpectrogram = librosa.amplitude_to_db(np.abs(shortFourier))
-#Result = 2D Array : decibel and frequency bin /// frequency bins = freq * n_fft / sr
+
 
 #DISPLAY LINES
 
@@ -46,12 +46,12 @@ def displayDataSet(dataSets):
         print("--------")
 
 def hz_to_fft(hz):
-    frequencies = librosa.cqt_frequencies(84,fmin=130, bins_per_octave=12).tolist()
+    frequencies = librosa.cqt_frequencies(84,fmin=FMIN, bins_per_octave=12).tolist()
     return frequencies.index(hz)
 
 #4. DETECTION OF THE PEAKS
 def detectionOfPeaks(spectrogram):
-    frequencies = librosa.cqt_frequencies(84,fmin=130, bins_per_octave=12)
+    frequencies = librosa.cqt_frequencies(84,fmin=FMIN, bins_per_octave=12)
     peaksData = [] #Peaks contains the time frame and properties (heights,...)
     for i, row in enumerate(spectrogram):
         peaks = sp.signal.find_peaks(row, height=5, threshold=0.3, distance=1, prominence=1)
@@ -77,14 +77,18 @@ def displaySpectogInTimeT(musicSpectrogram, framePeaks, num = -1):
     if num != -1:
         plt.vlines(num, -50, 50, color="r")
 
-def displaySpectogInTimeTWithFreq(musicSpectrogram,framePeaks, nums):
+def displaySpectogInTimeTWithFreq(musicSpectrogram,framePeaks, nums, reduceMaximums):
     onset_frames = librosa.onset.onset_detect(y=music, sr=sr)
-    fig, ax = plt.subplots()
     T = np.transpose(musicSpectrogram)
     for n in nums:
         if n[0] != 0:
             plt.vlines(hz_to_fft(n[0]), -50, 60, color="r") # 41
     plt.plot(T[onset_frames[framePeaks]])
+
+    for i in range(len(reduceMaximums)):
+        plt.vlines(hz_to_fft(reduceMaximums[i][0]), -50, 60, color="g") # 41
+    plt.plot(T[onset_frames[framePeaks]])
+
 
 def searchMaxValues(graph):
     threshold = -25
@@ -143,24 +147,6 @@ def dataToDisplayNotes(tablesOfNotes):
         displayable.append([time,frequency])
     return(displayable)
 
-def SplitFondamentaleAndHarmonique(values):
-    final_value = [[]]
-    final = []
-    if len(values) == 0:
-        return final_value
-    final_value.append(np.array(values).argmax())
-    final_value[0].append(np.array(values).argmax())
-    for v in values:
-        for fv in range(0, len(final_value) - 1):
-            #print(str("{0:.1f}".format(final_value[fv][0] / v)) + " = " + str(float(int(final_value[fv][0] / v))))
-            if ("{0:.1f}".format(final_value[fv][0] / v)) == (float(int(final_value[fv][0] / v))):
-                #print("Add !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                if not final_value[fv].__contains__(v):
-                    final_value[fv].append(v)
-                    final.append(v)
-
-    return final_value
-
 def SplitFondamentaleAndHarmoniqueWithoutOrdre(values):
     final = []
     if len(values) == 0:
@@ -184,6 +170,25 @@ def isFondamentale(value, hz):
     return True
 
 
+def findMaximum(pics):
+    maximum = pics[0][1]
+    index = 0
+    for note in range(1, len(pics)):
+        if maximum < pics[note][1]:
+            maximum = pics[note][1]
+            index = note
+    return index
+
+def filterMaximum(pic):
+    peaks = pic
+    notes = []
+    #remove the first maximum
+    maximumIndex = findMaximum(peaks)
+    notes.append(peaks[maximumIndex])
+    peaks.pop(maximumIndex)
+    return(notes)
+
+
 #Find notes
 def searchNote():
     notes = []
@@ -195,19 +200,16 @@ def searchNote():
         frameTransposed = tableTransposed[frame]
         #look for all the maximal value of each frames
         pic = searchMaxValues(frameTransposed)
-        #displaySpectogInTimeTWithFreq(musicSpectrogram,i,pic)
-        #plt.show()
-        #fondarmonique = SplitFondamentaleAndHarmonique(pic)
-        #finalList = SplitFondamentaleAndHarmoniqueWithoutOrdre(pic)
-        #print(len(testFreq))
-        #if len(testFreq) != 0:
+        filtered = filterMaximum(pic)
+        #displaySpectogInTimeTWithFreq(musicSpectrogram,i,pic,reduceMaximums)
+
 
         #Adding all the found values and convert it into the right format (for duration)
-        for note in pic:
-            notes.append((frame, note[0]))
-        pic = []
+        #tableOfNotes = [frame, frequency]
+        for note in range(len(filtered)):
+            notes.append([frame, filtered[note][0]])
+        filtered = []
     return(notes)
-
 
 def getDuration(notes, spectrogram):
     frequencies = (librosa.cqt_frequencies(84,fmin=FMIN, bins_per_octave=12)).tolist()
