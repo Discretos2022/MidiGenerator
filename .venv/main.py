@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pretty_midi
 import scipy as sp
 #AUDIO LOADING AND SETTINGS
-audioSample = "res/piano.wav"
+audioSample = "res/Married Life - Up [Piano Tutorial] (Synthesia)  PianoMavs.mp3"
 HOP_LENGTH = 512
 #sr = 22050
 music, sr = librosa.load(audioSample)
@@ -14,9 +14,7 @@ FMIN = float(librosa.note_to_hz("C2"))
 shortFourier = librosa.cqt(music, fmin=FMIN)
 musicSpectrogram = librosa.amplitude_to_db(np.abs(shortFourier))
 
-
 #DISPLAY LINES
-
 def displayLinesNotes(musicSpectrogram, sr, hop_length, notes, hline=-1, pr=-1):
     onset_frames = librosa.onset.onset_detect(y=music, sr=sr)
     plt.figure(figsize=(10, 5))
@@ -38,14 +36,7 @@ def displayLinesNotes(musicSpectrogram, sr, hop_length, notes, hline=-1, pr=-1):
         plt.plot(notes[note][0], notes[note][1], 'x')
     plt.colorbar(format="%+2.f dB")
 
-#DISPLAY BASIC DATA
-def displayDataSet(dataSets):
-    for row in range(len(dataSets)):
-        print(f"Row : {row}")
-        print(f"Frequency : {dataSets[row][0]}, Time : {dataSets[row][1]}, PeakHeight : {dataSets[row][2]}")
-        print("--------")
-
-def hz_to_fft(hz):
+def hz_to_cqt(hz):
     frequencies = librosa.cqt_frequencies(84,fmin=FMIN, bins_per_octave=12).tolist()
     return frequencies.index(hz)
 
@@ -77,21 +68,18 @@ def displaySpectogInTimeT(musicSpectrogram, framePeaks, num = -1):
     if num != -1:
         plt.vlines(num, -50, 50, color="r")
 
-def displaySpectogInTimeTWithFreq(musicSpectrogram,framePeaks, nums, reduceMaximums):
+def displaySpectogInTimeTWithFreq(musicSpectrogram,framePeaks, nums):
     onset_frames = librosa.onset.onset_detect(y=music, sr=sr)
     T = np.transpose(musicSpectrogram)
     for n in nums:
         if n[0] != 0:
-            plt.vlines(hz_to_fft(n[0]), -50, 60, color="r") # 41
+            plt.vlines(hz_to_cqt(n[0]), -50, 60, color="r") # 41
     plt.plot(T[onset_frames[framePeaks]])
 
-    for i in range(len(reduceMaximums)):
-        plt.vlines(hz_to_fft(reduceMaximums[i][0]), -50, 60, color="g") # 41
-    plt.plot(T[onset_frames[framePeaks]])
 
 
 def searchMaxValues(graph):
-    threshold = -25
+    threshold = -30
     frequencies = librosa.cqt_frequencies(84, fmin=FMIN, bins_per_octave=12)
     #going through all the value in one frame
     values = []
@@ -151,15 +139,14 @@ def SplitFondamentaleAndHarmoniqueWithoutOrdre(values):
     final = []
     if len(values) == 0:
         return final
-    final.append(float(np.array(values).argmax()))
-    for v in range(0, len(values) - 2):
-        #if math.fabs(values[v] - values[v - 1]) > 50:
-        if values[v] > 0:
-            if values[v] > 12:
-                #if isFondamentale(values, values[v]):
-                    final.append(values[v])
+    final.append(getMaxiFreq(values))
+    for v in values:
+        print((v[0] / final[0][0]), " / ", int(v[0] / final[0][0]))
+        if ((v[0] / final[0][0]) != int(v[0] / final[0][0])) or (((v[0] / final[0][0]) <= int(v[0] / final[0][0]) + 1) and ((v[0] / final[0][0]) >= int(v[0] / final[0][0]) - 1)):
+            if v[0] > final[0][0]:
+                if v[0] <= 1500:
+                    final.append(v)
     return final
-
 
 def isFondamentale(value, hz):
     for v in value:
@@ -200,34 +187,59 @@ def searchNote():
         frameTransposed = tableTransposed[frame]
         #look for all the maximal value of each frames
         pic = searchMaxValues(frameTransposed)
-        filtered = filterMaximum(pic)
-        #displaySpectogInTimeTWithFreq(musicSpectrogram,i,pic,reduceMaximums)
+        pic2 = GetFiveMax(pic)
+        pic3 = SplitFondamentaleAndHarmoniqueWithoutOrdre(pic2)
+
+
 
 
         #Adding all the found values and convert it into the right format (for duration)
         #tableOfNotes = [frame, frequency]
-        for note in range(len(filtered)):
-            notes.append([frame, filtered[note][0]])
-        filtered = []
+        for note in range(len(pic3)):
+            notes.append([frame, pic3[note][0]])
+        pic3 = []
     return(notes)
 
+
+def GetFiveMax(values):
+    result = []
+    for i in range(5):
+        if i < len(values):
+            result.append(getMaxiFreq(values))
+            values.remove(getMaxiFreq(values))
+    return result
+
+def getMaxiFreq(values):
+
+    result = values[0]
+
+    for v in values:
+
+        if v[1] > result[1]:
+
+            result = v
+
+    return result
+
+
+
 def getDuration(notes, spectrogram):
+    #frame,frequencies
     frequencies = (librosa.cqt_frequencies(84,fmin=FMIN, bins_per_octave=12)).tolist()
     finalnotes = []
     for note in range(len(notes)):
         frequency = notes[note][1]
         row = frequencies.index(frequency)
-
         startFrame = notes[note][0] + 1
-        minimumDecibel = 6
-
+        startingDecibel = spectrogram[row][startFrame]
         #Going through all the frames of the spectogram
         for frame in range(startFrame + 1, len(spectrogram[0])):
             currentDecibel = spectrogram[row][frame]
-            if minimumDecibel >= currentDecibel:
-                finalnotes.append([frequency, startFrame, frame, frame-startFrame])
-                #print(f"freq {frequency}, start {startFrame}, stop {frame}, total {frame-startFrame}")
-                break
+            if startingDecibel - startingDecibel*1.5 >= currentDecibel:
+                if(frame-(startFrame-1)) > 6:
+                    finalnotes.append([frequency, startFrame - 1, frame, frame-startFrame])
+                    print(f"freq {frequency}, start {startFrame - 1}, stop {frame}, total {frame-(startFrame-1)}")
+                    break
     return(finalnotes)
 
 ##6 Midi Conversion
@@ -242,7 +254,7 @@ def midiConversion(notes):
         startTime = float(librosa.frames_to_time(startFrame))
         stopTime = float(librosa.frames_to_time(stopFrame))
 
-        note = pretty_midi.Note(velocity=100, pitch=note_number, start=startTime, end=stopTime)
+        note = pretty_midi.Note(velocity=60, pitch=note_number, start=startTime, end=stopTime)
         piano.notes.append(note)
 
     piano_Instrument.instruments.append(piano)
