@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7237cedd-e035-4144-a178-2ba888af515a" name="Changes" comment="Finding one note">
+    <list default="true" id="7237cedd-e035-4144-a178-2ba888af515a" name="Changes" comment="Version 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.venv/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/main.py" afterDir="false" />
     </list>
@@ -213,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724793255378</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Version 1">
+      <option name="closed" value="true" />
+      <created>1725277936836</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1725277936837</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -237,6 +245,7 @@
     <MESSAGE value="Note Duration and Midi corrected" />
     <MESSAGE value="Searching notes" />
     <MESSAGE value="Finding one note" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finding one note" />
+    <MESSAGE value="Version 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 1" />
   </component>
 </project>
