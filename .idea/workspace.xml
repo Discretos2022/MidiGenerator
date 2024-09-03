@@ -4,9 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7237cedd-e035-4144-a178-2ba888af515a" name="Changes" comment="Added Guitar">
+    <list default="true" id="7237cedd-e035-4144-a178-2ba888af515a" name="Changes" comment="Final Version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Frequency.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Frequency_2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/Generator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/SearchNote.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/cello-C-chord.mid" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.venv/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/beethoven-ludwig-van-ecossaise_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/guitare/beethoven-ludwig-van-ecossaise_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/beethoven-ludwig-van-ecossaise_piano.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano/beethoven-ludwig-van-ecossaise_piano.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/beethoven-ludwig-van-ecossaise_piano_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano_guitare/beethoven-ludwig-van-ecossaise_piano_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/beethoven-ludwig-van-sonata_piano.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano/beethoven-ludwig-van-sonata_piano.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/hayden-warren-luse-silvery-starlight_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/guitare/hayden-warren-luse-silvery-starlight_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/hayden-warren-luse-silvery-starlight_piano.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano/hayden-warren-luse-silvery-starlight_piano.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/hayden-warren-luse-silvery-starlight_piano_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano_guitare/hayden-warren-luse-silvery-starlight_piano_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/holst-gustav-jupiter-from-the-planets_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/guitare/holst-gustav-jupiter-from-the-planets_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/holst-gustav-jupiter-from-the-planets_piano.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano/holst-gustav-jupiter-from-the-planets_piano.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/holst-gustav-jupiter-from-the-planets_piano_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano_guitare/holst-gustav-jupiter-from-the-planets_piano_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/traditional-jewish-partisan-songs_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/guitare/traditional-jewish-partisan-songs_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/traditional-jewish-partisan-songs_piano.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano/traditional-jewish-partisan-songs_piano.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/res/traditional-jewish-partisan-songs_piano_guitare.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/res/musicForModel/piano_guitare/traditional-jewish-partisan-songs_piano_guitare.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.venv/test.mid" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +68,7 @@
     &quot;Python.Frequency_2.executor&quot;: &quot;Run&quot;,
     &quot;Python.Generator.executor&quot;: &quot;Run&quot;,
     &quot;Python.SearchNote.executor&quot;: &quot;Run&quot;,
+    &quot;Python.instrumentDetection.executor&quot;: &quot;Run&quot;,
     &quot;Python.main (2).executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -66,13 +86,42 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res\musicForModel\piano" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res\musicForModel\guitare" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res\musicForModel\piano_guitare" />
       <recent name="C:\Users\Joshua\Documents\Joshua Siedel\Programmation Python\MidiGenerator\.venv\res" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res\musicForModel\piano" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res\musicForModel\guitare" />
+      <recent name="C:\Users\flgom\PycharmProjects\MidiGenerator\.venv\res\musicForModel\piano_guitare" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.instrumentDetection">
+    <configuration name="instrumentDetection" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MidiGenerator" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.venv" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/.venv/instrumentDetection.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MidiGenerator" />
       <option name="ENV_FILES" value="" />
@@ -121,6 +170,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.instrumentDetection" />
         <item itemvalue="Python.main (2)" />
       </list>
     </recent_temporary>
@@ -229,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725285174952</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Final Version">
+      <option name="closed" value="true" />
+      <created>1725357250483</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1725357250483</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,6 +313,7 @@
     <MESSAGE value="Finding one note" />
     <MESSAGE value="Version 1" />
     <MESSAGE value="Added Guitar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Guitar" />
+    <MESSAGE value="Final Version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final Version" />
   </component>
 </project>
