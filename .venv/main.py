@@ -47,7 +47,7 @@ def hz_to_cqt(hz):
     return frequencies.index(hz)
 
 def searchMaxValues(graph):
-    threshold = -30
+    threshold = 1
     frequencies = librosa.cqt_frequencies(n_bins, fmin=FMIN, bins_per_octave=bins_per_octave)
     #going through all the value in one frame
     values = []
@@ -69,16 +69,39 @@ def dataToDisplayNotes(table):
     return(displayable)
 
 def SplitFondamentaleAndHarmoniqueWithoutOrdre(values):
+    #Going through each frames
+    #There is only maximum 3 notes
+    print(f"Values : {values}")
     final = []
     if len(values) == 0:
         return final
-    final.append(getMaxiFreq(values))
-    for v in values:
-        #print((v[0] / final[0][0]), " / ", int(v[0] / final[0][0]))
-        if ((v[0] / final[0][0]) != int(v[0] / final[0][0])) or (((v[0] / final[0][0]) <= int(v[0] / final[0][0]) + 1) and ((v[0] / final[0][0]) >= int(v[0] / final[0][0]) - 1)):
-            if v[0] > final[0][0]:
-                if v[0] <= 1500:
-                    final.append(v)
+    #Considering that the fundamental is the loudest Note
+    fundamental = getMaxiDb(values)
+    frequencyFund = fundamental[0]
+    dbFund = fundamental[1]
+    final.append(fundamental)
+    values.remove(fundamental)
+    print(f"Fundamental {fundamental}")
+    print(f"Values without maximum : {values}")
+    if len(values) == 0:
+        return final
+    for note in range(0,len(values)):
+        freq = values[note][0]
+        db = values[note][1]
+        #should test on 0.5, 2
+        if freq / frequencyFund == 0.5 or round(freq,-1)/round(frequencyFund, -1) == 0.5 or int(freq) / int(frequencyFund) == 0.5:
+            print(f"Results {round(freq / frequencyFund)}, {round(round(freq,-1)/round(frequencyFund,-1))}, {round(int(freq) / int(frequencyFund))}")
+            index = final.index(fundamental)
+            if(freq < frequencyFund):
+                final[index] = [freq,db]
+            else:
+                final[index] = [frequencyFund,dbFund]
+
+            print(f"Is an Harmonic {values[note]}")
+        else:
+            final.append(fundamental)
+        print("-------------")
+
     return final
 
 def isFondamentale(value, hz):
@@ -98,41 +121,46 @@ def searchNote():
         #change the orientation of the table
         tableTransposed = np.transpose(musicSpectrogram)
         frameTransposed = tableTransposed[frame]
-        #look for all the maximal value of each frames
+        #look for all the maximal value of each frames, could be negative
         pic = searchMaxValues(frameTransposed)
         pic2 = GetFiveMax(pic)
-        pic3 = SplitFondamentaleAndHarmoniqueWithoutOrdre(pic2)
+        #pic3 = SplitFondamentaleAndHarmoniqueWithoutOrdre(pic2)
 
 
 
 
         #Adding all the found values and convert it into the right format (for duration)
         #tableOfNotes = [frame, frequency]
-        for note in range(len(pic3)):
-            notes.append([frame, pic3[note][0]])
-        pic3 = []
+        for note in range(len(pic2)):
+            notes.append([frame, pic2[note][0]])
+        pic2 = []
     return(notes)
 
 
 def GetFiveMax(values):
     result = []
-    for i in range(5):
-        if i < len(values):
-            result.append(getMaxiFreq(values))
-            values.remove(getMaxiFreq(values))
+    valuesNeeded = 6
+    valuesObtained = 0
+    lenght = len(values)
+    if lenght != 0:
+        if lenght < valuesNeeded:
+            valuesNeeded = lenght
+        while valuesNeeded != valuesObtained:
+            if len(values) != 0:
+                result.append(getMaxiDb(values))
+                values.remove(getMaxiDb(values))
+            valuesObtained += 1
     return result
 
-def getMaxiFreq(values):
-
-    result = values[0]
-
-    for v in values:
-
-        if v[1] > result[1]:
-
-            result = v
-
-    return result
+def getMaxiDb(values):
+        maximDb = values[0][1]
+        index = 0
+        for note in range(1, len(values)):
+            currentDb = values[note][1]
+            if currentDb > maximDb:
+                maximDb = currentDb
+                index = note
+        return([values[index][0],values[index][1]])
 
 
 
@@ -150,13 +178,13 @@ def getDuration(notes, spectrogram):
             currentDecibel = spectrogram[row][frame]
             if startingDecibel > 0:
                 if (startingDecibel - (startingDecibel*.5)) > currentDecibel:
-                    if(frame-startFrame) > 15 and (frame-startFrame) < 600:
+                    if(frame-startFrame) > 8 and (frame-startFrame) < 600:
                         finalnotes.append([frequency, startFrame, frame, frame-startFrame])
                         print(f"freq {frequency}, start {startFrame}, stop {frame}, total {frame-(startFrame)}")
                         break
             else:
                 if startingDecibel - abs(startingDecibel*.5) > currentDecibel:
-                    if(frame-startFrame) > 15 and (frame-startFrame) < 600:
+                    if(frame-startFrame) > 8 and (frame-startFrame) < 600:
                         finalnotes.append([frequency, startFrame, frame, frame - startFrame])
                         print(f"freq {frequency}, start {startFrame}, stop {frame}, total {frame - (startFrame)}")
                         break
@@ -190,5 +218,5 @@ def midiConversion(notes, instrument):
 tableOfNotes = searchNote()
 music = getDuration(tableOfNotes,musicSpectrogram)
 displayLinesNotes(musicSpectrogram,sr,HOP_LENGTH, dataToDisplayNotes(music))
-midiConversion(music, "guitare")
+midiConversion(music, "piano")
 plt.show()
